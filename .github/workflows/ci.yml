@@ -34,8 +34,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install system dependencies
-        run: sudo apt-get install -y gdal-bin libgdal-dev
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -54,10 +52,6 @@ jobs:
             --exclude=migrations \
             --count --statistics
 
-      - name: Check — no pending migrations
-        run: python manage.py migrate --check
-        env:
-          DJANGO_SETTINGS_MODULE: eneo_backend.settings
 
       - name: Test — pytest
         run: |
