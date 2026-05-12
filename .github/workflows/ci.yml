@@ -45,4 +45,4 @@ jobs:
       - name: Run pytest
         run: |
           cd django_sims_core
-          pytest sims_core/tests/ sims_network/tests/ -v --tb=short
+          python -m pytest sims_core/tests/ sims_network/tests/ -v --tb=short
