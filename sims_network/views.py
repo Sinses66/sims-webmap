@@ -22,6 +22,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .permissions import RoleBasedPermission
+from sims_core.throttles import CreateRateThrottle
 from datetime import timedelta
 from django.utils.dateparse import parse_datetime
 from rest_framework.response import Response
@@ -90,6 +91,11 @@ class IncidentViewSet(viewsets.ModelViewSet):
     permission_classes = [RoleBasedPermission]
     pagination_class   = FlexiblePageNumberPagination
     http_method_names  = ['get', 'post', 'patch', 'delete', 'head', 'options']
+
+    def get_throttles(self):
+        if self.action == 'create':
+            return [CreateRateThrottle()]
+        return super().get_throttles()
 
     def _base_queryset(self):
         """
@@ -229,6 +235,11 @@ class InterventionViewSet(viewsets.ModelViewSet):
     permission_classes = [RoleBasedPermission]
     pagination_class   = FlexiblePageNumberPagination
     http_method_names  = ['get', 'post', 'patch', 'delete', 'head', 'options']
+
+    def get_throttles(self):
+        if self.action == 'create':
+            return [CreateRateThrottle()]
+        return super().get_throttles()
 
     def get_queryset(self):
         # Scope multi-tenant via la FK directe incident__organisation
