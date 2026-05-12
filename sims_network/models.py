@@ -107,7 +107,7 @@ class TypeOuvrage(models.Model):
         verbose_name        = "Type d'ouvrage"
         verbose_name_plural = "Types d'ouvrage"
         ordering            = ['ordre', 'nom']
-        db_table            = 'eneo_reseau_typeouvrage'
+        db_table            = 'sims_network_typeouvrage'
 
     def save(self, *args, **kwargs):
         if self.application_layer_id:
@@ -174,7 +174,7 @@ class Ouvrage(models.Model):
         verbose_name        = 'Ouvrage'
         verbose_name_plural = 'Ouvrages'
         ordering            = ['code']
-        db_table            = 'eneo_reseau_ouvrage'
+        db_table            = 'sims_network_ouvrage'
 
     def __str__(self):
         label = self.nom or self.code
@@ -201,7 +201,7 @@ class TypeIncident(models.Model):
         verbose_name        = "Type d'incident"
         verbose_name_plural = "Types d'incident"
         ordering            = ['ordre', 'nom']
-        db_table            = 'eneo_reseau_typeincident'
+        db_table            = 'sims_network_typeincident'
 
     def __str__(self):
         return self.nom
@@ -232,7 +232,7 @@ class Equipe(models.Model):
         verbose_name        = 'Equipe'
         verbose_name_plural = 'Equipes'
         ordering            = ['nom']
-        db_table            = 'eneo_reseau_equipe'
+        db_table            = 'sims_network_equipe'
 
     def __str__(self):
         return self.nom
@@ -333,7 +333,7 @@ class Incident(models.Model):
         verbose_name        = 'Incident'
         verbose_name_plural = 'Incidents'
         ordering            = ['-date_signalement']
-        db_table            = 'eneo_reseau_incident'
+        db_table            = 'sims_network_incident'
         indexes = [
             models.Index(fields=['statut', 'priorite']),
             models.Index(fields=['date_signalement']),
@@ -395,7 +395,7 @@ class IncidentPhoto(models.Model):
         verbose_name        = "Photo d'incident"
         verbose_name_plural = "Photos d'incident"
         ordering            = ['uploaded_at']
-        db_table            = 'eneo_reseau_incidentphoto'
+        db_table            = 'sims_network_incidentphoto'
 
     def __str__(self):
         return f'Photo #{self.pk} – {self.incident}'
@@ -473,7 +473,7 @@ class Intervention(models.Model):
         verbose_name        = 'Intervention'
         verbose_name_plural = 'Interventions'
         ordering            = ['-created_at']
-        db_table            = 'eneo_reseau_intervention'
+        db_table            = 'sims_network_intervention'
         indexes = [
             models.Index(fields=['statut']),
             models.Index(fields=['date_planifiee']),
@@ -528,7 +528,7 @@ class InterventionPhoto(models.Model):
         verbose_name        = "Photo d'intervention"
         verbose_name_plural = "Photos d'intervention"
         ordering            = ['uploaded_at']
-        db_table            = 'eneo_reseau_interventionphoto'
+        db_table            = 'sims_network_interventionphoto'
 
     def __str__(self):
         return f"Photo #{self.pk} – {self.intervention}"
