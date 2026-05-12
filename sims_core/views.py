@@ -611,20 +611,19 @@ def global_search(request):
     # ── 1. Incidents ─────────────────────────────────────────────
     try:
         from sims_network.models import Incident
-        from sims_network.models import INCIDENT_STATUS_CHOICES  # pas nécessaire
         incidents = Incident.objects.filter(
             Q(titre__icontains=q) |
             Q(description__icontains=q) |
             Q(localisation__icontains=q) |
             Q(quartier__icontains=q) |
             Q(ville__icontains=q)
-        ).select_related('assigne_a')[:limit]
+        ).select_related('assigne_a', 'type_incident')[:limit]
 
         for inc in incidents:
             results.append({
                 'id':       f'incident_{inc.id}',
                 'type':     'incident',
-                'label':    inc.titre or inc.get_type_incident_display(),
+                'label':    inc.titre or (inc.type_incident.nom if inc.type_incident else '—'),
                 'sublabel': f'{inc.get_statut_display()} — {inc.get_priorite_display()}'
                             + (f' — {inc.localisation}' if inc.localisation else ''),
                 'lat':      inc.latitude,
