@@ -1,0 +1,701 @@
+/*
+ * sims_admin.css — Thème SIMS/ENEO pour Django Admin (Jazzmin)
+ * =============================================================
+ * Palette : navy #0D1B2A · cyan #00AADD · surface #112236
+ * Aligne l'admin avec la landing page et le frontend React.
+ *
+ * Placer dans : ~/projects/eneo_webmap/staticfiles/sims_admin.css
+ * Référencer  : JAZZMIN_SETTINGS["custom_css"] = "sims_admin.css"
+ */
+
+/* ── Variables SIMS ──────────────────────────────────────────── */
+:root {
+  --sims-navy:    #0D1B2A;
+  --sims-surface: #112236;
+  --sims-card:    #0f1e30;
+  --sims-cyan:    #00AADD;
+  --sims-cyan-dim:rgba(0,170,221,.12);
+  --sims-cyan-glow:rgba(0,170,221,.3);
+  --sims-eneo:    #f5a623;
+  --sims-text:    #E2E8F0;
+  --sims-muted:   #6b7f96;
+  --sims-border:  rgba(0,170,221,.15);
+}
+
+/* ── Fonts ────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+body, .content-wrapper, .main-header, .main-sidebar, .main-footer,
+input, select, textarea, button, .btn {
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.brand-text, .navbar-brand, h1, h2, h3, h4, h5 {
+  font-family: 'Poppins', 'Inter', sans-serif !important;
+}
+
+/* ── Body & Layout ───────────────────────────────────────────── */
+body, .wrapper {
+  background: var(--sims-navy) !important;
+  color: var(--sims-text) !important;
+}
+
+.content-wrapper {
+  background: var(--sims-navy) !important;
+}
+
+/* Grid lines subtiles (effet tech) */
+.content-wrapper::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,170,221,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,170,221,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Navbar ───────────────────────────────────────────────────── */
+.main-header,
+.main-header.navbar {
+  background: var(--sims-surface) !important;
+  border-bottom: 1px solid var(--sims-border) !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,.4) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link,
+.main-header .nav-link {
+  color: var(--sims-text) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: var(--sims-cyan) !important;
+}
+
+/* Topbar links active */
+.main-header .navbar-nav .active > .nav-link {
+  color: var(--sims-cyan) !important;
+}
+
+/* Search bar */
+.navbar-search-block .form-control {
+  background: var(--sims-navy) !important;
+  border-color: var(--sims-border) !important;
+  color: var(--sims-text) !important;
+}
+
+/* ── Brand / Logo area ───────────────────────────────────────── */
+.brand-link,
+.brand-link:hover {
+  background: var(--sims-surface) !important;
+  border-bottom: 1px solid var(--sims-border) !important;
+  color: var(--sims-cyan) !important;
+}
+
+.brand-text {
+  color: var(--sims-cyan) !important;
+  font-weight: 700 !important;
+  letter-spacing: .5px;
+}
+
+/* ── Logo SIMS sidebar — silhouette blanche pure, sans effet ─── */
+.brand-image,
+.brand-link img {
+  background: transparent !important;
+  border-radius: 0 !important;
+  max-height: 34px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  filter: brightness(0) invert(1) contrast(200%) brightness(2) !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+}
+
+/* Logo page de login — blanc avec halo blanc */
+.login-logo img,
+.login-logo a img {
+  background: transparent !important;
+  max-height: 90px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  filter: brightness(0) invert(1) drop-shadow(0 0 18px rgba(255,255,255,.35)) !important;
+  margin-bottom: .5rem !important;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────── */
+.main-sidebar,
+.sidebar {
+  background: var(--sims-surface) !important;
+  border-right: 1px solid var(--sims-border) !important;
+}
+
+/* Sidebar nav items */
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link {
+  color: var(--sims-muted) !important;
+  border-radius: 8px;
+  margin: 1px 8px;
+  transition: all .18s !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
+  background: var(--sims-cyan-dim) !important;
+  color: var(--sims-cyan) !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-dark-primary .nav-sidebar > .nav-item.menu-open > .nav-link {
+  background: var(--sims-cyan-dim) !important;
+  color: var(--sims-cyan) !important;
+  border-left: 3px solid var(--sims-cyan) !important;
+}
+
+/* Sidebar sub-items */
+.nav-treeview > .nav-item > .nav-link {
+  color: var(--sims-muted) !important;
+}
+.nav-treeview > .nav-item > .nav-link:hover,
+.nav-treeview > .nav-item > .nav-link.active {
+  color: var(--sims-cyan) !important;
+  background: rgba(0,170,221,.06) !important;
+}
+
+/* Sidebar section headers */
+.nav-header {
+  color: rgba(0,170,221,.5) !important;
+  font-size: .65rem !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase;
+  font-weight: 600 !important;
+  padding: .8rem 1rem .3rem !important;
+}
+
+/* Sidebar icons */
+.nav-sidebar .nav-icon {
+  color: var(--sims-cyan) !important;
+  opacity: .7;
+}
+.nav-sidebar .nav-item > .nav-link.active .nav-icon,
+.nav-sidebar .nav-item > .nav-link:hover .nav-icon {
+  opacity: 1;
+}
+
+/* ── Cards & Content ──────────────────────────────────────────── */
+.card {
+  background: var(--sims-card) !important;
+  border: 1px solid rgba(0,170,221,.08) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3) !important;
+}
+
+.card-header {
+  background: rgba(0,170,221,.06) !important;
+  border-bottom: 1px solid var(--sims-border) !important;
+  color: var(--sims-text) !important;
+  font-weight: 600 !important;
+}
+
+.card-title {
+  color: var(--sims-cyan) !important;
+}
+
+/* ── Tables ───────────────────────────────────────────────────── */
+.table {
+  color: var(--sims-text) !important;
+}
+
+.table thead th {
+  background: rgba(0,170,221,.08) !important;
+  border-bottom: 1px solid var(--sims-border) !important;
+  color: var(--sims-cyan) !important;
+  font-size: .78rem !important;
+  letter-spacing: .5px !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+}
+
+.table tbody td {
+  border-color: rgba(255,255,255,.04) !important;
+  color: var(--sims-text) !important;
+}
+
+.table tbody tr:hover td {
+  background: rgba(0,170,221,.05) !important;
+}
+
+#result_list input[type="checkbox"] {
+  accent-color: var(--sims-cyan);
+}
+
+/* ── Buttons — base commune ───────────────────────────────────── */
+.btn {
+  border-radius: 7px !important;
+  font-weight: 600 !important;
+  font-size: .82rem !important;
+  letter-spacing: .3px !important;
+  padding: .42rem 1.1rem !important;
+  transition: background .15s, box-shadow .15s, transform .1s !important;
+}
+.btn:active { transform: translateY(1px) !important; }
+
+/* Primary / Info — Enregistrer */
+.btn-primary,
+.btn-info {
+  background: rgba(0,170,221,.18) !important;
+  border: 1px solid rgba(0,170,221,.4) !important;
+  color: #a8dff0 !important;
+}
+.btn-primary:hover,
+.btn-info:hover {
+  background: rgba(0,170,221,.28) !important;
+  border-color: rgba(0,170,221,.65) !important;
+  color: #ffffff !important;
+}
+
+/* Success — Sauvegarder et continuer */
+.btn-success {
+  background: rgba(26,158,95,.18) !important;
+  border: 1px solid rgba(26,158,95,.4) !important;
+  color: #82d9ae !important;
+}
+.btn-success:hover {
+  background: rgba(26,158,95,.28) !important;
+  border-color: rgba(26,158,95,.65) !important;
+  color: #ffffff !important;
+}
+
+/* Danger — Supprimer */
+.btn-danger {
+  background: rgba(217,48,37,.15) !important;
+  border: 1px solid rgba(217,48,37,.38) !important;
+  color: #f0957f !important;
+}
+.btn-danger:hover {
+  background: rgba(217,48,37,.26) !important;
+  border-color: rgba(217,48,37,.6) !important;
+  color: #ffffff !important;
+}
+
+/* Warning */
+.btn-warning {
+  background: rgba(224,139,0,.15) !important;
+  border: 1px solid rgba(224,139,0,.38) !important;
+  color: #f0c060 !important;
+}
+.btn-warning:hover {
+  background: rgba(224,139,0,.26) !important;
+  border-color: rgba(224,139,0,.6) !important;
+  color: #ffffff !important;
+}
+
+/* Secondary / Default */
+.btn-secondary,
+.btn-default {
+  background: rgba(255,255,255,.05) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  color: #8fa8c0 !important;
+}
+.btn-secondary:hover,
+.btn-default:hover {
+  background: rgba(255,255,255,.09) !important;
+  border-color: rgba(255,255,255,.22) !important;
+  color: #c8d8e8 !important;
+}
+
+/* Submit row */
+.submit-row {
+  background: var(--sims-surface) !important;
+  border-top: 1px solid var(--sims-border) !important;
+  border-radius: 0 0 10px 10px !important;
+  padding: 1rem 1.5rem !important;
+  display: flex !important;
+  gap: .5rem !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+}
+
+/* Boutons submit — légèrement plus grands */
+.submit-row input[type="submit"],
+.submit-row .btn {
+  min-width: 140px !important;
+  text-align: center !important;
+}
+
+/* Bouton Supprimer dans submit row — aligné à droite */
+.submit-row .deletelink-box {
+  margin-left: auto !important;
+}
+.submit-row a.deletelink {
+  background: rgba(217,48,37,.15) !important;
+  border: 1px solid rgba(217,48,37,.38) !important;
+  color: #f0957f !important;
+  border-radius: 7px !important;
+  padding: .42rem 1.1rem !important;
+  font-weight: 600 !important;
+  font-size: .82rem !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  transition: background .15s, border-color .15s, color .15s !important;
+}
+.submit-row a.deletelink:hover {
+  background: rgba(217,48,37,.26) !important;
+  border-color: rgba(217,48,37,.6) !important;
+  color: #ffffff !important;
+}
+
+/* ── Forms ────────────────────────────────────────────────────── */
+input[type="text"], input[type="email"], input[type="password"],
+input[type="number"], input[type="url"], input[type="date"],
+select, textarea {
+  background: var(--sims-navy) !important;
+  border: 1px solid rgba(0,170,221,.18) !important;
+  color: var(--sims-text) !important;
+  border-radius: 8px !important;
+  transition: border-color .18s, box-shadow .18s !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--sims-cyan) !important;
+  box-shadow: 0 0 0 2px rgba(0,170,221,.18) !important;
+  outline: none !important;
+}
+
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  background: var(--sims-navy) !important;
+  border-color: rgba(0,170,221,.18) !important;
+  color: var(--sims-text) !important;
+}
+
+.select2-dropdown {
+  background: var(--sims-surface) !important;
+  border-color: var(--sims-border) !important;
+}
+
+.select2-results__option--highlighted {
+  background: var(--sims-cyan) !important;
+  color: var(--sims-navy) !important;
+}
+
+/* ── Breadcrumb ───────────────────────────────────────────────── */
+.breadcrumb {
+  background: transparent !important;
+}
+.breadcrumb-item a {
+  color: var(--sims-cyan) !important;
+}
+.breadcrumb-item.active {
+  color: var(--sims-muted) !important;
+}
+
+/* ── Links ────────────────────────────────────────────────────── */
+a {
+  color: var(--sims-cyan) !important;
+}
+a:hover {
+  color: #38c8f0 !important;
+}
+
+/* ── Dropdowns Bootstrap (menus navbar + actions + user) ─────── */
+.dropdown-menu {
+  background: #0f1e30 !important;
+  border: 1px solid rgba(0,170,221,.2) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.55) !important;
+  border-radius: 10px !important;
+  padding: .4rem .3rem !important;
+  min-width: 180px !important;
+}
+
+.dropdown-item {
+  color: #c8d8e8 !important;
+  border-radius: 6px !important;
+  padding: .5rem .9rem !important;
+  font-size: .84rem !important;
+  font-weight: 500 !important;
+  transition: background .12s, color .12s !important;
+}
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: rgba(0,170,221,.13) !important;
+  color: #ffffff !important;
+}
+.dropdown-item:active,
+.dropdown-item.active {
+  background: var(--sims-cyan) !important;
+  color: #ffffff !important;
+}
+
+/* Icônes dans les items */
+.dropdown-item i,
+.dropdown-item .fas,
+.dropdown-item .far {
+  color: var(--sims-cyan) !important;
+  width: 1.1rem !important;
+  margin-right: .4rem !important;
+  opacity: .85 !important;
+}
+
+/* Séparateur */
+.dropdown-divider {
+  border-color: rgba(0,170,221,.15) !important;
+  margin: .3rem .5rem !important;
+}
+
+/* En-têtes de section */
+.dropdown-header {
+  color: var(--sims-cyan) !important;
+  font-size: .7rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .06em !important;
+  padding: .5rem .9rem .2rem !important;
+  opacity: .75 !important;
+}
+
+/* ── Dropdown user (menu profil haut droite) ─────────────────── */
+.navbar-nav .user-menu .dropdown-menu {
+  width: 220px !important;
+  padding-bottom: .5rem !important;
+}
+.navbar-nav .user-menu .dropdown-menu .user-header {
+  background: linear-gradient(135deg, #0a1a2e 0%, var(--sims-surface) 100%) !important;
+  border-bottom: 1px solid rgba(0,170,221,.15) !important;
+  border-radius: 8px 8px 0 0 !important;
+  padding: 1rem !important;
+}
+.navbar-nav .user-menu .dropdown-menu .user-header p {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  margin: .15rem 0 0 !important;
+  font-size: .9rem !important;
+}
+.navbar-nav .user-menu .dropdown-menu .user-header p small,
+.navbar-nav .user-menu .dropdown-menu .user-header p span {
+  color: rgba(255,255,255,.55) !important;
+  font-size: .75rem !important;
+  font-weight: 400 !important;
+}
+.navbar-nav .user-menu .dropdown-menu .user-footer {
+  background: #091627 !important;
+  border-top: 1px solid rgba(0,170,221,.12) !important;
+  border-radius: 0 0 8px 8px !important;
+  padding: .5rem !important;
+  display: flex !important;
+  gap: .4rem !important;
+}
+
+/* ── Dropdown Actions (liste changelist) ─────────────────────── */
+select#action-select,
+#changelist-form .actions select {
+  background: #0f1e30 !important;
+  border: 1px solid rgba(0,170,221,.25) !important;
+  color: #c8d8e8 !important;
+  border-radius: 7px !important;
+  padding: .35rem .7rem !important;
+  font-size: .83rem !important;
+}
+select#action-select option,
+#changelist-form .actions select option {
+  background: #0f1e30 !important;
+  color: #c8d8e8 !important;
+}
+
+/* ── Select2 — dropdown liste et options ─────────────────────── */
+.select2-dropdown {
+  background: #0f1e30 !important;
+  border: 1px solid rgba(0,170,221,.2) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5) !important;
+  border-radius: 8px !important;
+}
+.select2-results__option {
+  color: #c8d8e8 !important;
+  padding: .45rem .75rem !important;
+  font-size: .84rem !important;
+}
+.select2-results__option--highlighted {
+  background: rgba(0,170,221,.18) !important;
+  color: #ffffff !important;
+}
+.select2-results__option[aria-selected="true"] {
+  background: rgba(0,170,221,.1) !important;
+  color: var(--sims-cyan) !important;
+}
+.select2-search--dropdown .select2-search__field {
+  background: #091627 !important;
+  border: 1px solid rgba(0,170,221,.2) !important;
+  color: #e2e8f0 !important;
+  border-radius: 5px !important;
+}
+.select2-container--default .select2-selection__rendered {
+  color: #c8d8e8 !important;
+}
+.select2-container--default .select2-selection__placeholder {
+  color: var(--sims-muted) !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background: rgba(0,170,221,.18) !important;
+  border-color: rgba(0,170,221,.35) !important;
+  color: #e2e8f0 !important;
+  border-radius: 4px !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  color: var(--sims-cyan) !important;
+}
+
+/* ── Pagination ───────────────────────────────────────────────── */
+.paginator a, .paginator span {
+  background: var(--sims-surface) !important;
+  border-color: var(--sims-border) !important;
+  color: var(--sims-text) !important;
+  border-radius: 6px !important;
+}
+.paginator .this-page {
+  background: var(--sims-cyan) !important;
+  color: var(--sims-navy) !important;
+  font-weight: 700 !important;
+}
+
+/* ── Info boxes / small boxes ────────────────────────────────── */
+.small-box {
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+.small-box.bg-info {
+  background: linear-gradient(135deg, #0074a2 0%, #005580 100%) !important;
+  border: 1px solid rgba(0,170,221,.2) !important;
+}
+
+/* ── Alerts & Messages ────────────────────────────────────────── */
+.alert-info {
+  background: rgba(0,170,221,.1) !important;
+  border-color: rgba(0,170,221,.25) !important;
+  color: #80d8f0 !important;
+}
+
+/* Django messages */
+.messagelist .success {
+  background: rgba(40,167,69,.12) !important;
+  border-left: 4px solid #28a745 !important;
+  border-radius: 8px !important;
+  color: #7de09a !important;
+}
+.messagelist .error {
+  background: rgba(220,53,69,.12) !important;
+  border-left: 4px solid #dc3545 !important;
+  border-radius: 8px !important;
+}
+.messagelist .warning {
+  background: rgba(245,166,35,.12) !important;
+  border-left: 4px solid var(--sims-eneo) !important;
+  border-radius: 8px !important;
+}
+
+/* ── Tabs (horizontal / vertical) ────────────────────────────── */
+.nav-tabs .nav-link {
+  color: var(--sims-muted) !important;
+  border-color: transparent !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+.nav-tabs .nav-link.active {
+  background: var(--sims-card) !important;
+  border-color: var(--sims-border) !important;
+  border-bottom-color: var(--sims-card) !important;
+  color: var(--sims-cyan) !important;
+}
+.nav-tabs .nav-link:hover {
+  color: var(--sims-cyan) !important;
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.main-footer {
+  background: var(--sims-surface) !important;
+  border-top: 1px solid var(--sims-border) !important;
+  color: var(--sims-muted) !important;
+  font-size: .75rem !important;
+}
+
+/* ── Bloc droit : masquer "Jazzmin version 2.6.0" ── */
+.main-footer .float-right,
+.main-footer .d-none.d-sm-inline {
+  display: none !important;
+}
+
+/* ── Bloc gauche : masquer "Copyright © 2026 ..." et remplacer ── */
+.main-footer strong {
+  font-size: 0 !important;
+  visibility: hidden;
+}
+.main-footer strong::before {
+  content: '© 2026 Powered by GeoEco Systems';
+  font-size: .75rem;
+  color: #6b7f96;
+  font-weight: normal;
+  visibility: visible;
+  display: inline;
+}
+
+/* Copyright (côté gauche) — masquer le texte Jazzmin, injecter le bon */
+.main-footer > .container-fluid > p,
+.main-footer > .container > p {
+  font-size: 0 !important;
+  color: transparent !important;
+  position: relative;
+}
+.main-footer > .container-fluid > p::before,
+.main-footer > .container > p::before {
+  content: '\00A9 2026 Powered by GeoEco Systems. All rights reserved.';
+  font-size: .75rem;
+  color: var(--sims-muted);
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Login page ───────────────────────────────────────────────── */
+.login-page {
+  background: var(--sims-navy) !important;
+}
+
+.login-box-body, .login-card-body {
+  background: var(--sims-surface) !important;
+  border: 1px solid var(--sims-border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,.5) !important;
+}
+
+.login-box-msg, .login-card-body .login-box-msg {
+  color: var(--sims-muted) !important;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--sims-navy); }
+::-webkit-scrollbar-thumb { background: rgba(0,170,221,.25); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,170,221,.5); }
+
+/* ── Object tools (add/history buttons) ──────────────────────── */
+.object-tools a {
+  background: var(--sims-cyan) !important;
+  color: var(--sims-navy) !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  transition: box-shadow .18s !important;
+}
+.object-tools a:hover {
+  box-shadow: 0 4px 16px var(--sims-cyan-glow) !important;
+  color: var(--sims-navy) !important;
+}
+
+/* ── Dashboard module headers ────────────────────────────────── */
+#content-main .module caption, #content-main .module h2 {
+  background: rgba(0,170,221,.1) !important;
+  border-bottom: 1px solid var(--sims-border) !important;
+  color: var(--sims-cyan) !important;
+  font-weight: 600 !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+/* Recent actions */
+#recent-actions-module h2 {
+  color: var(--sims-cyan) !important;
+}
+#recent-actions-module .actionlist li {
+  border-bottom: 1px solid rgba(255,255,255,.04) !important;
+  padding: .35rem 0 !important;
+}

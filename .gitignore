@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.log
+media/
+staticfiles/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+db.sqlite3
+_archive_eneo_reseau/

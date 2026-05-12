@@ -1,0 +1,45 @@
+# ════════════════════════════════════════════════════════════════════
+# requirements.txt  —  GeoDjango Backend (SIMS)
+# ════════════════════════════════════════════════════════════════════
+# Copier sur Ubuntu : ~/projects/eneo_webmap/requirements.txt
+#
+# Note : GDAL n'est PAS listé ici.
+# Il est installé séparément dans le Dockerfile avec la version
+# exacte qui correspond au GDAL système (gdal-config --version).
+# ════════════════════════════════════════════════════════════════════
+
+# ── Framework Django ──────────────────────────────────────────────
+Django==4.2.13
+djangorestframework==3.15.1
+
+# ── Authentification JWT ──────────────────────────────────────────
+djangorestframework-simplejwt==5.3.1
+
+# ── CORS ──────────────────────────────────────────────────────────
+django-cors-headers==4.3.1
+
+# ── Base de données ───────────────────────────────────────────────
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
+
+# ── GIS / GeoDjango ───────────────────────────────────────────────
+djangorestframework-gis==1.0
+
+# ── Filtrage des querysets ────────────────────────────────────────
+django-filter==23.5
+
+# ── Documentation API (OpenAPI / Swagger) ────────────────────────
+drf-spectacular==0.27.1
+
+# ── Images / fichiers ─────────────────────────────────────────────
+Pillow==10.3.0
+
+# ── Requêtes HTTP (appels GeoServer) ─────────────────────────────
+requests==2.31.0
+
+# ── Cache / sessions ──────────────────────────────────────────────
+django-redis==5.4.0     # optionnel : Redis pour le cache GeoServer layers
+
+# ── Serveur WSGI (production) ─────────────────────────────────────
+gunicorn==21.2.0
+django-jazzmin==2.6.0
