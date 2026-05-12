@@ -1,4 +1,4 @@
-name: CI Backend
+name: CI
 
 on:
   push:
@@ -7,7 +7,8 @@ on:
     branches: [master, main]
 
 jobs:
-  tests:
+  # ── Backend : lint + migrations + tests ─────────────────────────
+  backend:
     runs-on: ubuntu-latest
 
     services:
@@ -40,9 +41,53 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt flake8
 
-      - name: Run pytest
+      - name: Lint — flake8
+        run: |
+          cd django_sims_core
+          flake8 sims_core sims_network \
+            --max-line-length=120 \
+            --exclude=migrations \
+            --count --statistics
+
+      - name: Check — no pending migrations
+        run: |
+          cd django_sims_core
+          python manage.py migrate --check
+        env:
+          DJANGO_SETTINGS_MODULE: test_settings
+
+      - name: Test — pytest
         run: |
           cd django_sims_core
           python -m pytest sims_core/tests/ sims_network/tests/ -v --tb=short
+
+  # ── Frontend : lint + tests unitaires ───────────────────────────
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: eneo-webmap-frontend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd eneo-webmap-frontend
+          npm ci
+
+      - name: Lint — ESLint
+        run: |
+          cd eneo-webmap-frontend
+          npm run lint
+
+      - name: Test — Vitest
+        run: |
+          cd eneo-webmap-frontend
+          npm run test:run
