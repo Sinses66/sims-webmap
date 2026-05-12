@@ -40,9 +40,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: |
-          cd django_sims_core
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run pytest
         run: |
