@@ -1,0 +1,50 @@
+name: CI Backend
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:15-3.4-alpine
+        env:
+          POSTGRES_DB:       sims_db
+          POSTGRES_USER:     sims_user
+          POSTGRES_PASSWORD: sims_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgis://sims_user:sims_password@localhost:5432/sims_db
+      SECRET_KEY:   ci-secret-key-not-for-production
+      DEBUG:        "True"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          cd django_sims_core
+          pip install -r requirements.txt
+
+      - name: Run pytest
+        run: |
+          cd django_sims_core
+          pytest sims_core/tests/ sims_network/tests/ -v --tb=short
