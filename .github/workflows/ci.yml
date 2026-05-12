@@ -58,31 +58,5 @@ jobs:
           cd django_sims_core
           python -m pytest sims_core/tests/ sims_network/tests/ -v --tb=short
 
-  # ── Frontend : lint + tests unitaires ───────────────────────────
-  frontend:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-          cache-dependency-path: eneo-webmap-frontend/package-lock.json
-
-      - name: Install dependencies
-        run: |
-          cd eneo-webmap-frontend
-          npm ci
-
-      - name: Lint — ESLint
-        run: |
-          cd eneo-webmap-frontend
-          npm run lint
-
-      - name: Test — Vitest
-        run: |
-          cd eneo-webmap-frontend
-          npm run test:run
+  # Frontend job disabled — frontend not yet tracked in repo
+  # TODO: re-enable once eneo-webmap-frontend/ is committed
