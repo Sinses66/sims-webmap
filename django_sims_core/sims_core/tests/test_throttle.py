@@ -28,6 +28,8 @@ class TestLoginThrottle:
 
     def setup_method(self):
         """Client frais + utilisateur de test."""
+        from django.urls import clear_url_caches
+        clear_url_caches()
         self.client = APIClient()
         self.user = User.objects.create_user(
             username='throttle_test_user',
