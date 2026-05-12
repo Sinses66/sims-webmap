@@ -29,7 +29,7 @@ import pytest
 
 from sims_network.models import Incident, IncidentStatut, Intervention, InterventionStatut
 
-INCIDENTS_URL     = '/api/incidents/'
+INCIDENTS_URL = '/api/incidents/'
 INTERVENTIONS_URL = '/api/interventions/'
 
 
@@ -51,7 +51,7 @@ class TestIncidentAcces:
     def test_reponse_est_paginee(self, auth_client_admin, incident_ouvert):
         response = auth_client_admin.get(INCIDENTS_URL)
         data = response.json()
-        assert 'count'   in data
+        assert 'count' in data
         assert 'results' in data
 
     def test_incident_present_dans_liste(self, auth_client_admin, incident_ouvert):

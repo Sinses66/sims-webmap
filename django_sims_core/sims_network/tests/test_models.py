@@ -290,7 +290,7 @@ class TestInterventionCloturer:
         """
         inc = make_incident(statut=IncidentStatut.EN_COURS)
         itv1 = make_intervention(inc, statut=InterventionStatut.EN_COURS)
-        itv2 = make_intervention(inc, statut=InterventionStatut.EN_COURS)
+        _ = make_intervention(inc, statut=InterventionStatut.EN_COURS)
 
         itv1.cloturer()
         inc.refresh_from_db()
@@ -335,7 +335,7 @@ class TestInterventionDureeReelle:
         itv = make_intervention(inc)
         now = timezone.now()
         itv.date_debut = now
-        itv.date_fin   = now + timedelta(minutes=45)
+        itv.date_fin = now + timedelta(minutes=45)
         itv.save()
         assert itv.duree_reelle_minutes == 45
 
@@ -345,6 +345,6 @@ class TestInterventionDureeReelle:
         itv = make_intervention(inc)
         now = timezone.now()
         itv.date_debut = now
-        itv.date_fin   = now + timedelta(hours=2, minutes=30)
+        itv.date_fin = now + timedelta(hours=2, minutes=30)
         itv.save()
         assert itv.duree_reelle_minutes == 150

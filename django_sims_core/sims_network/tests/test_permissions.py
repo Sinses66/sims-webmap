@@ -33,7 +33,6 @@ Matrice testée :
 import pytest
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient, APIRequestFactory
-from rest_framework.views import APIView
 
 from sims_network.permissions import RoleBasedPermission, _get_role
 from sims_network.models import (
@@ -46,10 +45,11 @@ from sims_core.models import Organisation, UserProfile
 #  Fixtures
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def make_user_with_role(username, role, db):
     """Crée un utilisateur Django + profil avec le rôle donné."""
     user = User.objects.create_user(username=username, password='testpass')
-    org  = Organisation.objects.get_or_create(name='TestOrg', slug='testorg')[0]
+    org = Organisation.objects.get_or_create(name='TestOrg', slug='testorg')[0]
     UserProfile.objects.create(user=user, organisation=org, role=role)
     return user
 
@@ -64,21 +64,26 @@ def make_client(user):
 def user_admin(db):
     return make_user_with_role('perm_admin', 'admin', db)
 
+
 @pytest.fixture
 def user_superviseur(db):
     return make_user_with_role('perm_superviseur', 'superviseur', db)
+
 
 @pytest.fixture
 def user_operateur(db):
     return make_user_with_role('perm_operateur', 'operateur', db)
 
+
 @pytest.fixture
 def user_lecteur(db):
     return make_user_with_role('perm_lecteur', 'lecteur', db)
 
+
 @pytest.fixture
 def user_sans_profil(db):
     return User.objects.create_user(username='perm_sans_profil', password='testpass')
+
 
 @pytest.fixture
 def incident(db, user_admin):
@@ -91,6 +96,7 @@ def incident(db, user_admin):
         signale_par=user_admin,
     )
 
+
 @pytest.fixture
 def intervention(db, incident, user_admin):
     return Intervention.objects.create(
@@ -100,13 +106,17 @@ def intervention(db, incident, user_admin):
         created_by=user_admin,
     )
 
-INCIDENTS_URL     = '/api/incidents/'
+
+INCIDENTS_URL = '/api/incidents/'
+
+
 INTERVENTIONS_URL = '/api/interventions/'
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Tests unitaires de _get_role et RoleBasedPermission
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestGetRole:
@@ -188,6 +198,7 @@ class TestRoleBasedPermissionUnitaire:
 # ─────────────────────────────────────────────────────────────────────────────
 #  Tests d'intégration — Incidents
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestIncidentPermissionsLecture:
@@ -313,6 +324,7 @@ class TestIncidentPermissionsActions:
 # ─────────────────────────────────────────────────────────────────────────────
 #  Tests d'intégration — Interventions
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestInterventionPermissionsLecture:

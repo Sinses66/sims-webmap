@@ -160,15 +160,15 @@ class Command(BaseCommand):
             }
         )
         if org_created:
-            self.stdout.write(self.style.SUCCESS(f'✔ Organisation créée : {org}'))
+            self.stdout.write(self.style.SUCCESS('✔ Organisation créée : {org}'))
         else:
-            self.stdout.write(f'   Organisation existante : {org}')
+            self.stdout.write('   Organisation existante : {org}')
 
         # ── 2. Application ───────────────────────────────────────
         if reset:
             deleted, _ = Application.objects.filter(slug='camwater').delete()
             if deleted:
-                self.stdout.write(self.style.WARNING(f'⚠ App CAMWATER supprimée (reset)'))
+                self.stdout.write(self.style.WARNING('⚠ App CAMWATER supprimée (reset)'))
 
         admin_user = User.objects.filter(is_superuser=True).first()
 
@@ -207,9 +207,9 @@ class Command(BaseCommand):
         )
 
         if app_created:
-            self.stdout.write(self.style.SUCCESS(f'✔ Application créée  : {app}'))
+            self.stdout.write(self.style.SUCCESS('✔ Application créée  : {app}'))
         else:
-            self.stdout.write(f'   Application existante : {app}')
+            self.stdout.write('   Application existante : {app}')
             if not reset:
                 self.stdout.write('   (utilisez --reset pour recréer les couches)')
                 return
@@ -233,11 +233,11 @@ class Command(BaseCommand):
             f'✅  CAMWATER GIS prête — {layers_count} couche(s) — slug: camwater'
         ))
         self.stdout.write(
-            f'   → URL : http://localhost:5173/app/camwater'
+            '   → URL : http://localhost:5173/app/camwater'
         )
         self.stdout.write(
-            f'   → module_analytics = False  (teste le masquage React)'
+            '   → module_analytics = False  (teste le masquage React)'
         )
         self.stdout.write(
-            f'   → primary_color = #0ea5e9  (bleu eau vs cyan ENEO)'
+            '   → primary_color = #0ea5e9  (bleu eau vs cyan ENEO)'
         )

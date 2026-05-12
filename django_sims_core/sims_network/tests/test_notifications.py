@@ -36,14 +36,12 @@ Couverture :
 import pytest
 from datetime import timedelta
 from django.utils import timezone
-from django.urls import reverse
 from rest_framework.test import APIClient
 
 from sims_network.models import (
     Incident, IncidentStatut, TypeIncident,
     Intervention, InterventionStatut,
 )
-
 
 # ── Helpers ───────────────────────────────────────────────────────
 
@@ -73,8 +71,8 @@ def make_intervention(incident, statut=InterventionStatut.PLANIFIEE, **kwargs):
     defaults.update(kwargs)
     return Intervention.objects.create(incident=incident, **defaults)
 
-
 # ── Tests authentification ────────────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestNotificationsFeedAuth:
@@ -93,8 +91,8 @@ class TestNotificationsFeedAuth:
         response = auth_client_admin.get(FEED_URL)
         assert response.status_code == 200
 
-
 # ── Tests structure de la réponse ────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestNotificationsFeedStructure:
@@ -123,8 +121,8 @@ class TestNotificationsFeedStructure:
         data = response.json()
         assert isinstance(data['events'], list)
 
-
 # ── Tests paramètre since absent ─────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestNotificationsFeedSansParam:
@@ -145,8 +143,8 @@ class TestNotificationsFeedSansParam:
         ids = [e['id'] for e in data['events']]
         assert inc.id not in ids
 
-
 # ── Tests paramètre since présent ────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestNotificationsFeedAvecSince:
@@ -205,7 +203,7 @@ class TestNotificationsFeedAvecSince:
         """Une intervention créée après `since` → event type intervention_nouvelle."""
         since = self._since_iso(-2)
         inc = make_incident(titre="Incident parent", signale_par=user_lecteur)
-        iv = make_intervention(inc)
+        _ = make_intervention(inc)
 
         response = auth_client_lecteur.get(FEED_URL, {'since': since})
         data = response.json()
@@ -225,8 +223,8 @@ class TestNotificationsFeedAvecSince:
         modifies_ids = [e['id'] for e in data['events'] if e['type'] == 'incident_modifie']
         assert inc.id not in modifies_ids
 
-
 # ── Tests paramètre since invalide ───────────────────────────────
+
 
 @pytest.mark.django_db
 class TestNotificationsFeedSinceInvalide:
@@ -243,8 +241,8 @@ class TestNotificationsFeedSinceInvalide:
         assert 'count' in data
         assert 'events' in data
 
-
 # ── Tests structure des événements ────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestNotificationsFeedStructureEvenements:
@@ -294,11 +292,15 @@ class TestNotificationsFeedStructureEvenements:
         """L'événement intervention_nouvelle contient les bons champs."""
         since = self._since_iso(-2)
         inc = make_incident(titre="Incident pour intervention", signale_par=user_lecteur)
-        iv = make_intervention(inc)
+        _ = make_intervention(inc)
 
         response = auth_client_lecteur.get(FEED_URL, {'since': since})
         data = response.json()
-        event = next((e for e in data['events'] if e.get('type') == 'intervention_nouvelle' and e.get('incident_id') == inc.id), None)
+        event = next(
+            (e for e in data['events']
+             if e.get('type') == 'intervention_nouvelle' and e.get('incident_id') == inc.id),
+            None,
+        )
 
         assert event is not None
         assert 'id' in event
@@ -330,8 +332,8 @@ class TestNotificationsFeedStructureEvenements:
         assert event is not None
         assert event['titre'] == 'Coupure HTA'
 
-
 # ── Tests tri ────────────────────────────────────────────────────
+
 
 @pytest.mark.django_db
 class TestNotificationsFeedTri:
@@ -342,9 +344,9 @@ class TestNotificationsFeedTri:
 
         # Créer 3 incidents dans l'ordre (created_at sera now() pour chacun,
         # les dates seront proches mais différentes → l'ordre devrait être maintenu)
-        inc1 = make_incident(titre="Premier")
-        inc2 = make_incident(titre="Deuxième")
-        inc3 = make_incident(titre="Troisième")
+        _ = make_incident(titre="Premier")
+        _ = make_incident(titre="Deuxième")
+        _ = make_incident(titre="Troisième")
 
         response = auth_client_lecteur.get(FEED_URL, {'since': since})
         data = response.json()

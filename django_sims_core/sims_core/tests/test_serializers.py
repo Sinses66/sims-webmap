@@ -24,7 +24,7 @@ Couverture :
 
 import pytest
 
-from sims_core.models import Organisation, Application, ApplicationLayer
+from sims_core.models import ApplicationLayer
 from sims_core.serializers import ApplicationLayerSerializer
 
 
@@ -136,7 +136,7 @@ class TestApplicationLayerSerializerReadOnly:
         Vérification directe sur la déclaration du sérialiseur.
         """
         ser = ApplicationLayerSerializer()
-        assert ser.fields["group"].read_only   is True
+        assert ser.fields["group"].read_only is True
         assert ser.fields["visible"].read_only is True
         assert ser.fields["opacity"].read_only is True
 

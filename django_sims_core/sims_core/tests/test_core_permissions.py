@@ -80,7 +80,7 @@ Couverture :
 import pytest
 from django.contrib.auth.models import User, AnonymousUser
 from django.core.exceptions import ValidationError
-from rest_framework.test import APIRequestFactory, APIClient
+from rest_framework.test import APIRequestFactory
 
 from sims_core.views import IsAdminOrReadOnly, IsOwnerOrSharedReadOnly
 from sims_core.models import (
@@ -589,7 +589,7 @@ class TestOrgScopingLayers:
 
     def _ids(self, resp):
         data = resp.data.get('results', resp.data) if isinstance(resp.data, dict) else resp.data
-        return [l['id'] for l in data]
+        return [layer['id'] for layer in data]
 
     def test_lecteur_voit_couches_sa_propre_org(
         self, auth_client_lecteur, layer_wms, layer_autre_org
