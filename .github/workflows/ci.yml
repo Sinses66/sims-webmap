@@ -52,11 +52,9 @@ jobs:
             --count --statistics
 
       - name: Check — no pending migrations
-        run: |
-          cd django_sims_core
-          python manage.py migrate --check
+        run: python manage.py migrate --check
         env:
-          DJANGO_SETTINGS_MODULE: test_settings
+          DJANGO_SETTINGS_MODULE: eneo_backend.settings
 
       - name: Test — pytest
         run: |
