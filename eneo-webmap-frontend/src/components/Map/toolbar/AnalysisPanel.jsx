@@ -77,7 +77,7 @@ export default function AnalysisPanel() {
     const first  = cached?.features?.[0]
     if (!first?.properties) return []
     return Object.keys(first.properties).filter(k => !GEO_FIELDS.has(k))
-  }, [statsLayer, wfsLayers, queryClient]) // eslint-disable-line
+  }, [statsLayer, wfsLayers, queryClient])
 
   if (drawMode !== 'analysis_panel') return null
 
