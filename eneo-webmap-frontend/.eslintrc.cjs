@@ -17,5 +17,24 @@ module.exports = {
     'react/no-unescaped-entities': 'off',
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'no-constant-condition': 'warn',
+    'no-empty': ['error', { allowEmptyCatch: true }],
+    'no-undef': 'warn',
   },
+  overrides: [
+    {
+      files: ['**/__tests__/**/*.{js,jsx}', '**/*.test.{js,jsx}', '**/*.spec.{js,jsx}', '**/setup*.{js,jsx}'],
+      env: { browser: true },
+      globals: {
+        vi: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        global: 'writable',
+      },
+    },
+  ],
 }
