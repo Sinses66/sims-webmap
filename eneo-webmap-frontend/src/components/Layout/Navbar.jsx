@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import {
   User, LogOut, Sun, Moon, Settings,
   ChevronDown, Wifi, WifiOff, ChevronLeft, MapPin,
@@ -8,43 +8,55 @@ import {
 import { useAuthStore }  from '../../store/authStore'
 import { useMapStore }   from '../../store/mapStore'
 import { useAppContext } from '../../context/AppContext'
-import { useUiStore }    from '../../store/uiStore'
 import NotificationBell  from './NotificationBell'
 import clsx from 'clsx'
 
-// ── Onglets de navigation ─────────────────────────────────────
-const NAV_TABS = [
-  { panel: null,            label: 'Carte',         icon: Map           },
-  { panel: 'incidents',     label: 'Incidents',     icon: AlertTriangle },
-  { panel: 'interventions', label: 'Interventions', icon: Wrench        },
+// ── Onglets de navigation (filtrés par modules actifs) ────────────
+const ALL_NAV_TABS = [
+  { id: 'map',           label: 'Carte',         icon: Map,           moduleKey: null            },
+  { id: 'incidents',     label: 'Incidents',     icon: AlertTriangle, moduleKey: 'incidents'     },
+  { id: 'interventions', label: 'Interventions', icon: Wrench,        moduleKey: 'interventions' },
 ]
 
 export default function Navbar() {
   const { user, logout }             = useAuthStore()
   const { darkMode, toggleDarkMode } = useMapStore()
-  const { appMeta }                  = useAppContext()
-  const { activePanel, togglePanel, closePanel } = useUiStore()
+  const { appMeta, modules, isLoading } = useAppContext()
   const navigate                     = useNavigate()
+  const location                     = useLocation()
+  const { appSlug }                  = useParams()
   const [menuOpen, setMenuOpen]      = useState(false)
   const [online]                     = useState(navigator.onLine)
+
+  const base = `/app/${appSlug}`
+
+  // Onglet actif déduit de l'URL (pas d'état local)
+  const activeTab = location.pathname.startsWith(`${base}/interventions`) ? 'interventions'
+                  : location.pathname.startsWith(`${base}/incidents`)     ? 'incidents'
+                  : 'map'
+
+  // Filtrer les onglets selon les modules activés pour cette application
+  const visibleTabs = isLoading
+    ? ALL_NAV_TABS.filter(t => t.moduleKey === null)
+    : ALL_NAV_TABS.filter(t => t.moduleKey === null || modules[t.moduleKey] === true)
+
+  const handleTabClick = (tabId) => {
+    if (tabId === 'map') {
+      navigate(base)
+    } else {
+      navigate(`${base}/${tabId}`)
+    }
+  }
 
   const handleLogout = () => {
     logout()
     navigate('/', { replace: true })
   }
 
-  const handleTabClick = (panel) => {
-    if (panel === null) {
-      closePanel()   // onglet Carte → ferme le panneau
-    } else {
-      togglePanel(panel)
-    }
-  }
-
   return (
     <header
       className="h-12 flex items-center px-3 gap-2 shrink-0 border-b border-cyan-500/10"
-      style={{ background: '#0D1B2A', boxShadow: '0 1px 0 rgba(0,170,221,0.08)', position: 'relative', zIndex: 1002 }}
+      style={{ background: '#0D1B2A', boxShadow: '0 1px 0 rgba(0,170,221,0.08)', position: 'relative', zIndex: 100 }}
     >
 
       {/* ── Retour plateforme ── */}
@@ -66,7 +78,7 @@ export default function Navbar() {
         <div
           className="w-2 h-2 rounded-full shrink-0"
           style={{
-            background:  appMeta.color,
+            background: appMeta.color,
             boxShadow:  `0 0 6px ${appMeta.color}80`,
           }}
         />
@@ -85,24 +97,21 @@ export default function Navbar() {
 
       {/* ── Onglets Carte / Incidents / Interventions ── */}
       <nav className="hidden sm:flex items-center gap-0.5 shrink-0">
-        {NAV_TABS.map(({ panel, label, icon: Icon }) => {
-          const isActive = activePanel === panel
-          return (
-            <button
-              key={label}
-              onClick={() => handleTabClick(panel)}
-              className={clsx(
-                'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
-                isActive
-                  ? 'bg-cyan-500/15 text-cyan-300'
-                  : 'text-white/40 hover:text-white/70 hover:bg-white/6',
-              )}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              <span className="hidden md:block">{label}</span>
-            </button>
-          )
-        })}
+        {visibleTabs.map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            onClick={() => handleTabClick(id)}
+            className={clsx(
+              'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+              activeTab === id
+                ? 'bg-cyan-500/15 text-cyan-300'
+                : 'text-white/40 hover:text-white/70 hover:bg-white/6',
+            )}
+          >
+            <Icon className="w-3.5 h-3.5" />
+            <span className="hidden md:block">{label}</span>
+          </button>
+        ))}
       </nav>
 
       {/* Spacer */}
@@ -160,16 +169,16 @@ export default function Navbar() {
 
         {menuOpen && (
           <>
-            <div className="fixed inset-0" style={{ zIndex: 1000 }} onClick={() => setMenuOpen(false)} />
+            <div className="fixed inset-0" style={{ zIndex: 98 }} onClick={() => setMenuOpen(false)} />
             <div
               className="absolute right-0 top-full mt-1.5 w-52 rounded-xl border border-cyan-500/15
                           shadow-2xl overflow-hidden animate-fade-in"
-              style={{ background: '#132337', zIndex: 1001 }}
+              style={{ background: '#132337', zIndex: 99 }}
             >
               {/* Infos utilisateur */}
               <div className="px-4 py-3 border-b border-white/8 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-cyan-500/40
-                                flex items-center justify-content shrink-0 bg-cyan-500/15">
+                                flex items-center justify-center shrink-0 bg-cyan-500/15">
                   {user?.avatar
                     ? <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
                     : <span className="w-full h-full flex items-center justify-center

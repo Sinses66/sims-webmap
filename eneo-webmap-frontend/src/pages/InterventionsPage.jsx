@@ -103,7 +103,7 @@ export default function InterventionsPage() {
     ...(typeT   && { type_travaux: typeT }),
     page,
   }
-  const { data, isLoading, isFetching, refetch } = useInterventions(params)
+  const { data, isLoading, isFetching, isError, refetch } = useInterventions(params)
 
   const interventions = data?.results ?? (Array.isArray(data) ? data : [])
   const totalCount    = data?.count   ?? interventions.length
@@ -130,6 +130,24 @@ export default function InterventionsPage() {
     try { return format(new Date(d), 'dd MMM yyyy HH:mm', { locale: fr }) }
     catch { return d }
   }
+
+  if (isError) return (
+    <div className="h-full flex flex-col items-center justify-center gap-4" style={{ background: '#0F1E2E' }}>
+      <Wrench className="w-10 h-10 text-red-400/60" />
+      <div className="text-center">
+        <p className="text-white/70 font-medium">Impossible de charger les interventions</p>
+        <p className="text-white/35 text-sm mt-1">Vérifiez votre connexion ou contactez l'administrateur.</p>
+      </div>
+      <button
+        onClick={() => refetch()}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        style={{ background: 'rgba(0,170,221,0.15)', color: '#00aadd' }}
+      >
+        <RefreshCw className="w-4 h-4" />
+        Réessayer
+      </button>
+    </div>
+  )
 
   return (
     <div className="flex flex-col h-full overflow-hidden" style={{ background: '#0F1E2E' }}>

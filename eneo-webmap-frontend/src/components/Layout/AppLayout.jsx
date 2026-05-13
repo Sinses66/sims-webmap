@@ -1,18 +1,16 @@
 import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import Navbar        from './Navbar'
-import PanelOverlay  from './PanelOverlay'
-import { AppProvider }      from '../../context/AppContext'
-import { useAuthStore }     from '../../store/authStore'
-import { authAPI }          from '../../services/api'
+import Navbar             from './Navbar'
+import { AppProvider }    from '../../context/AppContext'
+import { useAuthStore }   from '../../store/authStore'
+import { authAPI }        from '../../services/api'
 import { useNotifications } from '../../hooks/useNotifications'
 
 /**
  * Layout principal de l'application :
  *   [ Navbar (haut, fixe) ]
- *   [ main : position:relative ]
- *     ├── Outlet  (MapPage — toujours rendu en dessous)
- *     └── PanelOverlay (slide-in par-dessus la carte si activePanel ≠ null)
+ *   [ main : flex-1 ]
+ *     └── Outlet  (MapPage / IncidentsPage / InterventionsPage)
  *
  * Re-fetch le profil utilisateur au montage si le token est présent
  * mais que l'objet user a été perdu (rechargement de page).
@@ -39,11 +37,8 @@ function AppLayoutInner() {
   return (
     <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#1A2E45' }}>
       <Navbar />
-      <main className="flex-1 overflow-hidden relative">
-        {/* Carte toujours visible */}
+      <main className="flex-1 overflow-hidden">
         <Outlet />
-        {/* Panneau incidents / interventions par-dessus */}
-        <PanelOverlay />
       </main>
     </div>
   )

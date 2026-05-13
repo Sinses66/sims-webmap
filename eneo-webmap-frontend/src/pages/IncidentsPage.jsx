@@ -204,8 +204,8 @@ export default function IncidentsPage() {
     ...(priorite && { priorite }),
   }
 
-  const { data, isLoading, refetch } = useIncidents(params)
-  const { data: stats }              = useIncidentStats()
+  const { data, isLoading, isError, refetch } = useIncidents(params)
+  const { data: stats }                       = useIncidentStats()
 
   const incidents = data?.results ?? []
   const total     = data?.count    ?? 0
@@ -216,6 +216,24 @@ export default function IncidentsPage() {
   }
 
   const S = { background: '#0D1B2A', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)', colorScheme: 'dark' }
+
+  if (isError) return (
+    <div className="h-full flex flex-col items-center justify-center gap-4" style={{ background: '#0F1E2E' }}>
+      <AlertTriangle className="w-10 h-10 text-red-400/60" />
+      <div className="text-center">
+        <p className="text-white/70 font-medium">Impossible de charger les incidents</p>
+        <p className="text-white/35 text-sm mt-1">Vérifiez votre connexion ou contactez l'administrateur.</p>
+      </div>
+      <button
+        onClick={() => refetch()}
+        className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        style={{ background: 'rgba(0,170,221,0.15)', color: '#00aadd' }}
+      >
+        <RefreshCw className="w-4 h-4" />
+        Réessayer
+      </button>
+    </div>
+  )
 
   return (
     <div className="h-full overflow-y-auto p-5 space-y-4" style={{ background: '#0F1E2E' }}>
